@@ -21,26 +21,26 @@ function statement (invoice, plays) {
     return result;
 
     function amountFor(perf, play) {
-        let thisAmount = 0;
+        let amount = 0;
 
         switch (play.type) {
             case "tragedy":
-                thisAmount = 40000;
+                amount = 40000;
                 if (perf.audience > 30) {
-                    thisAmount += 1000 * (perf.audience - 30);
+                    amount += 1000 * (perf.audience - 30);
                 }
                 break;
             case "comedy":
-                thisAmount = 30000;
+                amount = 30000;
                 if (perf.audience > 20) {
-                    thisAmount += 10000 + 500 * (perf.audience - 20);
+                    amount += 10000 + 500 * (perf.audience - 20);
                 }
-                thisAmount += 300 * perf.audience;
+                amount += 300 * perf.audience;
                 break;
             default:
                 throw new Error(`unknown type: ${play.type}`);
         }
-        return thisAmount;
+        return amount;
     }
 }
 
