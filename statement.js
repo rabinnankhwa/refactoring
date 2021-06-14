@@ -4,7 +4,7 @@ function statement (invoice, plays) {
         result += ` ${playFor(perf).name}: ${usd(amountFor(perf)/100)} (${perf.audience}`
     }
 
-    result += `Amount owed is ${usd(appleSauce()/100)}\n`; 
+    result += `Amount owed is ${usd(totalAmount()/100)}\n`; 
     result += `You earned ${totalVolumeCredits()} credits\n`; 
     return result;
 
@@ -55,7 +55,7 @@ function statement (invoice, plays) {
         return volumeCredits;
     }
 
-    function appleSauce() {
+    function totalAmount() {
         let total = 0;
         for (let perf of invoice.performances) {
             total += amountFor(perf);
