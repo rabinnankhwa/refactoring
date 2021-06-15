@@ -2,18 +2,23 @@ function statement (invoice, plays) {
     const statementData = {};
     statementData.customer = invoice.customer;
     statementData.performances = invoice.performances.map(enrichPerformance)
-    return renderPlainText(statementData, plays)
+    return renderPlainText(statementData);
 
     function enrichPerformance(aPerformance) {
         const result = Object.assign({}, aPerformance);
+        result.play = playFor(result);
         return result;
+    }
+
+    function playFor(aPerformance) {
+        return plays[aPerformance.playID];
     }
 }
 
-function renderPlainText (data, plays) {
+function renderPlainText (data) {
     let result = `Statement for ${data.customer}\n`; 
     for (let perf of data.performances) {
-        result += ` ${playFor(perf).name}: ${usd(amountFor(perf)/100)} (${perf.audience}`
+        result += ` ${perf.play.name}: ${usd(amountFor(perf)/100)} (${perf.audience}`;
     }
 
     result += `Amount owed is ${usd(totalAmount()/100)}\n`; 
@@ -23,7 +28,7 @@ function renderPlainText (data, plays) {
     function amountFor(aPerformance) {
         let amount = 0;
 
-        switch (playFor(aPerformance).type) {
+        switch (aPerformance.play.type) {
             case "tragedy":
                 amount = 40000;
                 if (aPerformance.audience > 30) {
@@ -38,19 +43,15 @@ function renderPlainText (data, plays) {
                 amount += 300 * aPerformance.audience;
                 break;
             default:
-                throw new Error(`unknown type: ${playFor(aPerformance).type}`);
+                throw new Error(`unknown type: ${aPerformance.play.type}`);
         }
         return amount;
-    }
-
-    function playFor(aPerformance) {
-        return plays[aPerformance.playID];
     }
 
     function volumeCreditsFor(aPerformance) {
         let credits = 0;
         credits += Math.max(aPerformance.audience - 30, 0);
-        if ("comedy" === playFor(aPerformance).type) credits += Math.floor(aPerformance.audience/10);
+        if ("comedy" === aPerformance.play.type) credits += Math.floor(aPerformance.audience/10);
         return credits;
     }
 
