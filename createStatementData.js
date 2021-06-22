@@ -53,11 +53,7 @@ class PerformanceCalculator {
 
         switch (this.play.type) {
             case "tragedy":
-                amount = 40000;
-                if (this.performance.audience > 30) {
-                    amount += 1000 * (this.performance.audience - 30);
-                }
-                break;
+                throw new Error("subclass responsibility")
             case "comedy":
                 amount = 30000;
                 if (this.performance.audience > 20) {
@@ -80,6 +76,13 @@ class PerformanceCalculator {
 }
 
 class TragedyCalculator extends PerformanceCalculator {
+    get amount() {
+        let amount = 40000;
+        if (this.performance.audience > 30) {
+            amount += 1000 * (this.performance.audience - 30);
+        }
+        return amount;
+    }
 }
 
 class ComedyCalculator extends PerformanceCalculator {
