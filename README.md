@@ -9,3 +9,4 @@ Note:
 - Refactoring changes the programs in small steps, so if you make a mistake, it is easy to find where the bug is.
 - Any fool can write code that a computer can understand. Good programmers write code that humans can understand.
 - When programming, follow the camping rule: Always leave the code base healthier than when you found it.
+- The true test of good code is how easy it is to change it.
