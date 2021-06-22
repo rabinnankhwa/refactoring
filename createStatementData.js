@@ -20,36 +20,13 @@ function createStatementData(invoice, plays) {
         const calculator = new PerformanceCalculator(aPerformance, playFor(aPerformance));
         const result = Object.assign({}, aPerformance);
         result.play = calculator.play;
-        result.amount = amountFor(result);
+        result.amount = calculator.amount;
         result.volumeCredits = volumeCreditsFor(result);
         return result;
     }
 
     function playFor(aPerformance) {
         return plays[aPerformance.playID];
-    }
-
-    function amountFor(aPerformance) {
-        let amount = 0;
-
-        switch (aPerformance.play.type) {
-            case "tragedy":
-                amount = 40000;
-                if (aPerformance.audience > 30) {
-                    amount += 1000 * (aPerformance.audience - 30);
-                }
-                break;
-            case "comedy":
-                amount = 30000;
-                if (aPerformance.audience > 20) {
-                    amount += 10000 + 500 * (aPerformance.audience - 20);
-                }
-                amount += 300 * aPerformance.audience;
-                break;
-            default:
-                throw new Error(`unknown type: ${aPerformance.play.type}`);
-        }
-        return amount;
     }
 
     function volumeCreditsFor(aPerformance) {
@@ -64,6 +41,30 @@ class PerformanceCalculator {
     constructor(aPerformance, aPlay) {
         this.performance = aPerformance;
         this.play = aPlay;
+    }
+
+
+    get amount() {
+        let amount = 0;
+
+        switch (this.play.type) {
+            case "tragedy":
+                amount = 40000;
+                if (this.performance.audience > 30) {
+                    amount += 1000 * (this.performance.audience - 30);
+                }
+                break;
+            case "comedy":
+                amount = 30000;
+                if (this.performance.audience > 20) {
+                    amount += 10000 + 500 * (this.performance.audience - 20);
+                }
+                amount += 300 * this.performance.audience;
+                break;
+            default:
+                throw new Error(`unknown type: ${this.play.type}`);
+        }
+        return amount;
     }
 }
 
